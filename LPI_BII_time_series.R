@@ -757,8 +757,6 @@ ggsave("Figure_ABC_LPI_BII_GDP_clean.png", fig_abc, width = 7.2, height = 9.2, d
 ggsave("Figure_ABC_LPI_BII_GDP_clean.pdf", fig_abc, width = 7.2, height = 9.2)
 
 
-library(dplyr)
-library(ggplot2)
 
 
 
@@ -813,3 +811,7 @@ p_d
 
 fig_abcd <- p_a / p_b / p_c / p_d +
   plot_layout(heights = c(1, 1, 1,1))
+
+
+ggsave("Figure_ABCD_LPI_BII_GDP_clean.pdf", fig_abcd, width = 7.2, height = 9.2)
+
