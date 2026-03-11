@@ -8,6 +8,10 @@ library(readr)
 library(dplyr)
 
 # Load the data
+
+# economics
+econ_data <- readRDS("data/long_data.rds")
+
 bii_data <- readRDS("data/long_data.rds")
 bii_data <- read.csv("data/resource.csv")
 # View the first few rows
@@ -48,7 +52,7 @@ ggplot(bii_subset, aes(x = year, y = value, color = scenario)) +
        x = "Year", y = "Biodiversity Intactness Index (%)") +
   theme_minimal()
 
-### data are in 5 year blocks
+### data are in 10 year blocks
 
 library(readr)
 
@@ -67,15 +71,12 @@ library(ggplot2)
 # check it
 ggplot(filter(gapminder,country=="Australia"), aes(x = year, y =  gdpPercap)) +
   geom_point() +
-  geom_point(filter(bii_subset,country=="Australia"), aes(x = year, y =  value)) +
-  facet_wrap(~ country, scales = "free_y") +
   labs(title = "GDP per capita  Time Series by Country",
        x = "Year", y = "GDPPP") +
   theme_minimal()
 
 # get decadal averages by country
 
-gapminder %>% summarise(gdpPercap,c(country, continent))
 
 gapminder_decadal <- gapminder %>%
   mutate(decade = floor(year / 10) * 10) %>%
@@ -101,7 +102,7 @@ ggplot(bii_gdp, aes(x = value, y = mean_GDPPP, color = continent)) +
   geom_point() +
   facet_wrap(~ year, scales = "free_y") +
   labs(title = "BII vs GDPPP",
-       x ="Per Capita GDP" , y = "Biodiversity Intactness Index (%)") +
+       x = "Biodiversity Intactness Index (%)" , y = "Per Capita GDP") +
   theme_minimal()
 
 
@@ -134,8 +135,19 @@ ggplot(filter(bii_gdp, year == 1990), aes(y = change_gdp, x = change_bii, color 
   ) +
   theme_minimal()
 
+
+# snapshot to see how compares across countries ina given year- no clear pattern
+ggplot(bii_gdp, aes(y = change_gdp, x = change_bii, color = continent)) +
+  geom_point() +
+  facet_wrap(~ year, scales = "free_y") +
+  labs(title = "BII vs GDPPP",
+       x = "Change in Biodiversity Intactness Index (%)" , y = "Change in Per Capita GDP") +
+  theme_minimal()
+
 # Export merged data with country names
 write_csv(bii_gdp, "output/bii_gdppp_timeseries_by_country.csv")
 
 
-
+# group countries - low middle high income
+# other y-variables: total productivity & wellbeing
+# other x-variables: BES-SIM variables
